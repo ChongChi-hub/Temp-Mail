@@ -120,14 +120,44 @@ async function checkMail() {
 // 3. Vẽ danh sách ra màn hình
 function renderList(messages) {
     const listEl = document.getElementById('mail-list');
-    listEl.innerHTML = ''; // Xóa cũ
+    listEl.innerHTML = ''; // Xóa danh sách cũ
 
     messages.forEach(msg => {
         const li = document.createElement('li');
+        
+        // 1. Xử lý thời gian
+        const time = new Date(msg.createdAt).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+        
+        // 2. LOGIC TRÍCH XUẤT CODE (QUAN TRỌNG)
+        // Ghép cả tiêu đề và đoạn trích (intro) để tìm cho chắc
+        const fullText = (msg.subject + " " + (msg.intro || "")).trim();
+        
+        // Regex tìm 5 số liên tiếp: /\b\d{5}\b/
+        // \b: Ranh giới từ (để không bắt nhầm số trong chuỗi dài như 123456)
+        // \d{5}: Đúng 5 chữ số
+        const codeMatch = fullText.match(/\b\d{5}\b/);
+        
+        let displayContent = "";
+        
+        if (codeMatch) {
+            // Nếu tìm thấy code -> Hiển thị to, rõ, màu nổi bật
+            displayContent = `<span style="color: #2ecc71; font-weight: bold; font-size: 16px; font-family: monospace;">CODE: ${codeMatch[0]}</span>`;
+        } else {
+            // Nếu không tìm thấy -> Hiển thị tiêu đề bình thường (nhưng mờ hơn chút)
+            displayContent = msg.subject || '(Không có tiêu đề)';
+        }
+
+        // 3. Render HTML
         li.innerHTML = `
-            <div class="mail-from">${msg.from.address} <span class="mail-time">${new Date(msg.createdAt).toLocaleTimeString()}</span></div>
-            <div class="mail-subject">${msg.subject}</div>
+            <div class="mail-header">
+                <span class="mail-from">${msg.from.address}</span>
+                <span class="mail-time">${time}</span>
+            </div>
+            <div class="mail-subject">
+                ${displayContent}
+            </div>
         `;
+        
         li.onclick = () => readMail(msg.id);
         listEl.appendChild(li);
     });
