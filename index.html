@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mail 10p VIPPROMAX by ChongChi</title>
+    <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <div class="main-container">
+        <h1 class="title">Email 10 phút</h1>
+        <p class="subtitle">Donate: MB Bank 15999995199999 DAO TRONG TRI</p>
+
+        <div class="email-input-wrapper">
+            <input type="text" id="email-address" value="Đang tạo email..." readonly>
+            
+            <div class="right-controls">
+                <span id="timer">10:00</span>
+                <button class="btn-icon" onclick="copyToClipboard()" title="Sao chép">
+                    <i class="far fa-copy"></i>
+                </button>
+            </div>
+        </div>
+
+        <div class="action-buttons">
+            <button class="btn-outline" onclick="resetTimer()">
+                <i class="far fa-clock"></i> Thêm 10 phút nữa
+            </button>
+            <button class="btn-outline" onclick="createNewEmail()">
+                <i class="fas fa-pen"></i> Thay đổi
+            </button>
+        </div>
+
+        <div class="inbox-container">
+            <div class="inbox-header">
+                <span>Tin nhắn</span>
+                <button class="btn-refresh" onclick="manualRefresh()">
+                    <i class="fas fa-sync-alt"></i> Làm mới
+                </button>
+            </div>
+
+            <div class="inbox-content" id="inbox-content">
+                
+                <div id="state-loading" class="state-box" style="display: none;">
+                    <div class="spinner"></div>
+                    <p>Đang tải tin nhắn...</p>
+                </div>
+
+                <div id="state-empty" class="state-box">
+                    <i class="far fa-envelope-open" style="font-size: 48px; margin-bottom: 15px; opacity: 0.5;"></i>
+                    <h3>Hộp thư đang trống</h3>
+                    <p>Đang chờ email đến</p>
+                </div>
+
+                <ul id="mail-list"></ul>
+
+            </div>
+        </div>
+    </div>
+
+    <script src="./js/script.js"></script>
+</body>
+</html>

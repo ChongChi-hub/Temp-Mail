@@ -1,0 +1,179 @@
+:root {
+    --bg-color: #151515;       /* Nền đen chính */
+    --card-bg: #1e1e1e;        /* Nền của hộp input/inbox */
+    --border-color: #333333;   /* Viền xám tối */
+    --text-primary: #ffffff;
+    --text-secondary: #b0b3b8;
+    --accent-color: #007bff;   /* Màu xanh link */
+    --green-timer: #2ecc71;    /* Màu xanh lá của đồng hồ */
+}
+
+* { box-sizing: border-box; }
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-primary);
+    display: flex;
+    justify-content: center;
+    min-height: 100vh;
+    margin: 0;
+    padding: 20px;
+}
+
+.main-container {
+    width: 100%;
+    max-width: 800px;
+    text-align: center;
+}
+
+.title { font-size: 28px; margin-bottom: 10px; font-weight: 700; }
+.subtitle { color: var(--text-secondary); font-size: 14px; margin-bottom: 30px; }
+
+/* --- INPUT EMAIL ĐẸP --- */
+.email-input-wrapper {
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 10px 15px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    height: 60px;
+    position: relative;
+}
+
+#email-address {
+    background: transparent;
+    border: none;
+    color: var(--text-primary);
+    font-size: 18px;
+    width: 100%;
+    outline: none;
+    font-family: monospace; /* Font giống code */
+}
+
+.right-controls {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+#timer {
+    color: var(--green-timer);
+    font-weight: bold;
+    font-family: monospace;
+    font-size: 18px;
+}
+
+.btn-icon {
+    background: transparent;
+    border: none;
+    color: var(--text-secondary);
+    font-size: 20px;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+.btn-icon:hover { color: #fff; }
+
+/* --- BUTTONS --- */
+.action-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 40px;
+}
+
+.btn-outline {
+    background: transparent;
+    border: 1px solid var(--border-color);
+    color: var(--text-secondary);
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.2s;
+}
+
+.btn-outline:hover {
+    background-color: #333;
+    color: #fff;
+    border-color: #555;
+}
+
+/* --- INBOX --- */
+.inbox-container {
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    background-color: var(--card-bg);
+    text-align: left;
+    min-height: 400px;
+    display: flex;
+    flex-direction: column;
+}
+
+.inbox-header {
+    padding: 15px 20px;
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: bold;
+}
+
+.btn-refresh {
+    background: transparent;
+    border: none;
+    color: var(--accent-color);
+    cursor: pointer;
+    font-size: 13px;
+}
+.btn-refresh:hover { text-decoration: underline; }
+
+.inbox-content {
+    flex-grow: 1;
+    position: relative;
+    padding: 0;
+}
+
+/* Các trạng thái (Empty / Loading) */
+.state-box {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: var(--text-secondary);
+    padding: 40px;
+    min-height: 300px;
+}
+
+/* Spinner xoay xoay */
+.spinner {
+    border: 3px solid rgba(255,255,255,0.1);
+    border-top: 3px solid var(--text-secondary);
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    animation: spin 1s linear infinite;
+    margin-bottom: 10px;
+}
+
+@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+/* Danh sách mail */
+#mail-list { list-style: none; padding: 0; margin: 0; }
+#mail-list li {
+    padding: 15px 20px;
+    border-bottom: 1px solid var(--border-color);
+    cursor: pointer;
+    transition: background 0.2s;
+}
+#mail-list li:hover { background-color: #2a2a2a; }
+.mail-from { font-weight: bold; color: #fff; margin-bottom: 4px; }
+.mail-subject { color: var(--text-secondary); font-size: 14px; }
+.mail-time { float: right; font-size: 12px; color: #666; }
