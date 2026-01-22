@@ -14,12 +14,22 @@
         <h1 class="title">Email 10 phút</h1>
         <p class="subtitle">Donate: MB Bank 15999995199999 DAO TRONG TRI</p>
 
-        <div class="email-input-wrapper">
-            <input type="text" id="email-address" value="Đang tạo email..." readonly>
+        <div class="input-group">
+            <input type="text" id="email-address" value="Đang tạo email..." readonly class="input-field">
             
-            <div class="right-controls">
-                <span id="timer">10:00</span>
-                <button class="btn-icon" onclick="copyToClipboard()" title="Sao chép">
+            <div class="input-controls">
+                <span id="timer" class="timer-text">10:00</span>
+                <button class="btn-icon" onclick="copyToClipboard('email', this)" title="Sao chép Email">
+                    <i class="far fa-copy"></i>
+                </button>
+            </div>
+        </div>
+
+        <div class="input-group">
+            <input type="text" id="user-code" placeholder="Nhập mã code..." class="input-field">
+            
+            <div class="input-controls">
+                <button class="btn-icon" onclick="copyToClipboard('code', this)" title="Sao chép Code">
                     <i class="far fa-copy"></i>
                 </button>
             </div>
@@ -27,7 +37,7 @@
 
         <div class="action-buttons">
             <button class="btn-outline" onclick="resetTimer()">
-                <i class="far fa-clock"></i> Thêm 10 phút nữa
+                <i class="far fa-clock"></i> +10 phút
             </button>
             <button class="btn-outline" onclick="createNewEmail()">
                 <i class="fas fa-pen"></i> Thay đổi

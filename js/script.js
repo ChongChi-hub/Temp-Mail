@@ -146,12 +146,38 @@ async function readMail(id) {
 }
 
 // 5. Nút Copy
-function copyToClipboard() {
-    navigator.clipboard.writeText(currentEmail);
-    // Hiệu ứng nháy nút copy
-    const btn = document.querySelector('.btn-icon');
-    btn.style.color = '#2ecc71';
-    setTimeout(() => btn.style.color = '', 500);
+// --- HÀM COPY ĐÃ NÂNG CẤP ---
+function copyToClipboard(type, btnElement) {
+    let text = "";
+    
+    // 1. Lấy nội dung cần copy
+    if (type === 'email') {
+        text = currentEmail; // Lấy từ biến toàn cục
+    } else if (type === 'code') {
+        const codeInput = document.getElementById('user-code');
+        text = codeInput ? codeInput.value : ""; // Lấy từ ô input
+    }
+
+    // Nếu không có gì để copy thì dừng
+    if (!text) return;
+
+    // 2. Thực hiện Copy
+    navigator.clipboard.writeText(text).then(() => {
+        // 3. Hiệu ứng đổi icon thành dấu tích (Chỉ chạy khi copy thành công)
+        if (btnElement) {
+            const originalIcon = btnElement.innerHTML; // Lưu icon cũ (hình tờ giấy)
+            
+            // Đổi sang dấu tích màu xanh
+            btnElement.innerHTML = '<i class="fas fa-check" style="color: #2ecc71;"></i>';
+            
+            // Sau 1 giây thì trả lại icon cũ
+            setTimeout(() => {
+                btnElement.innerHTML = originalIcon;
+            }, 1000);
+        }
+    }).catch(err => {
+        console.error('Không copy được: ', err);
+    });
 }
 
 // 6. Nút Gia hạn (Reset đồng hồ)

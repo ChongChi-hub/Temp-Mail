@@ -1,14 +1,19 @@
+/* --- BIẾN MÀU SẮC (Dễ dàng chỉnh sửa sau này) --- */
 :root {
     --bg-color: #151515;       /* Nền đen chính */
-    --card-bg: #1e1e1e;        /* Nền của hộp input/inbox */
-    --border-color: #333333;   /* Viền xám tối */
-    --text-primary: #ffffff;
-    --text-secondary: #b0b3b8;
-    --accent-color: #007bff;   /* Màu xanh link */
-    --green-timer: #2ecc71;    /* Màu xanh lá của đồng hồ */
+    --card-bg: #1e1e1e;        /* Nền của các hộp */
+    --border-color: #333333;   /* Màu viền */
+    --text-primary: #ffffff;   /* Chữ chính màu trắng */
+    --text-secondary: #b0b3b8; /* Chữ phụ màu xám */
+    --accent-color: #007bff;   /* Màu xanh dương (icon refresh) */
+    --green-timer: #2ecc71;    /* Màu xanh lá (đồng hồ) */
+    --hover-bg: #2a2a2a;       /* Màu nền khi di chuột vào */
 }
 
-* { box-sizing: border-box; }
+/* --- CẤU HÌNH CƠ BẢN --- */
+* {
+    box-sizing: border-box;
+}
 
 body {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
@@ -16,6 +21,7 @@ body {
     color: var(--text-primary);
     display: flex;
     justify-content: center;
+    align-items: center;
     min-height: 100vh;
     margin: 0;
     padding: 20px;
@@ -23,66 +29,107 @@ body {
 
 .main-container {
     width: 100%;
-    max-width: 800px;
+    max-width: 750px;
     text-align: center;
 }
 
-.title { font-size: 28px; margin-bottom: 10px; font-weight: 700; }
-.subtitle { color: var(--text-secondary); font-size: 14px; margin-bottom: 30px; }
+/* --- TIÊU ĐỀ --- */
+.title {
+    font-size: 28px;
+    margin-bottom: 10px;
+    font-weight: 700;
+}
 
-/* --- INPUT EMAIL ĐẸP --- */
-.email-input-wrapper {
+.subtitle {
+    color: var(--text-secondary);
+    font-size: 14px;
+    margin-bottom: 30px;
+    line-height: 1.5;
+}
+
+/* --- KHUNG INPUT (DÙNG CHUNG CHO EMAIL & CODE) --- */
+.input-group {
     background-color: var(--card-bg);
     border: 1px solid var(--border-color);
     border-radius: 8px;
-    padding: 10px 15px;
+    padding: 0 15px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 20px;
     height: 60px;
-    position: relative;
+    margin-bottom: 15px;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
 }
 
-#email-address {
+/* Hiệu ứng khi bấm vào nhập liệu */
+.input-group:focus-within {
+    border-color: #555;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+.input-field {
     background: transparent;
     border: none;
     color: var(--text-primary);
-    font-size: 18px;
+    font-size: 17px;
     width: 100%;
     outline: none;
-    font-family: monospace; /* Font giống code */
+    font-family: 'Courier New', Courier, monospace; /* Font kiểu code */
+    font-weight: 600;
+    letter-spacing: 0.5px;
 }
 
-.right-controls {
+.input-field::placeholder {
+    color: #555;
+    font-weight: normal;
+    font-style: italic;
+}
+
+.input-controls {
     display: flex;
     align-items: center;
     gap: 15px;
+    flex-shrink: 0;
 }
 
-#timer {
+/* Đồng hồ đếm ngược */
+.timer-text {
     color: var(--green-timer);
-    font-weight: bold;
     font-family: monospace;
-    font-size: 18px;
+    font-size: 16px;
+    font-weight: bold;
 }
 
+/* Nút copy icon */
 .btn-icon {
-    background: transparent;
-    border: none;
+    background: var(--hover-bg);
+    border: 1px solid #444;
     color: var(--text-secondary);
-    font-size: 20px;
+    font-size: 16px;
     cursor: pointer;
-    transition: color 0.2s;
+    width: 36px;
+    height: 36px;
+    border-radius: 6px;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
-.btn-icon:hover { color: #fff; }
 
-/* --- BUTTONS --- */
+.btn-icon:hover {
+    background: #3a3a3a;
+    color: #fff;
+    border-color: #666;
+}
+
+/* --- CÁC NÚT CHỨC NĂNG (Thêm giờ, Thay đổi) --- */
 .action-buttons {
     display: flex;
     justify-content: center;
     gap: 15px;
     margin-bottom: 40px;
+    margin-top: 25px;
 }
 
 .btn-outline {
@@ -100,12 +147,12 @@ body {
 }
 
 .btn-outline:hover {
-    background-color: #333;
+    background-color: var(--hover-bg);
     color: #fff;
-    border-color: #555;
+    border-color: #666;
 }
 
-/* --- INBOX --- */
+/* --- HỘP THƯ (INBOX) --- */
 .inbox-container {
     border: 1px solid var(--border-color);
     border-radius: 8px;
@@ -114,6 +161,7 @@ body {
     min-height: 400px;
     display: flex;
     flex-direction: column;
+    overflow: hidden; /* Bo góc mượt mà */
 }
 
 .inbox-header {
@@ -123,6 +171,7 @@ body {
     justify-content: space-between;
     align-items: center;
     font-weight: bold;
+    font-size: 15px;
 }
 
 .btn-refresh {
@@ -130,9 +179,10 @@ body {
     border: none;
     color: var(--accent-color);
     cursor: pointer;
-    font-size: 13px;
+    font-size: 14px;
+    transition: opacity 0.2s;
 }
-.btn-refresh:hover { text-decoration: underline; }
+.btn-refresh:hover { opacity: 0.8; }
 
 .inbox-content {
     flex-grow: 1;
@@ -140,19 +190,22 @@ body {
     padding: 0;
 }
 
-/* Các trạng thái (Empty / Loading) */
+/* --- TRẠNG THÁI (Loading / Empty) --- */
 .state-box {
     height: 100%;
+    min-height: 350px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     color: var(--text-secondary);
-    padding: 40px;
-    min-height: 300px;
 }
 
-/* Spinner xoay xoay */
+.state-box i {
+    margin-bottom: 15px;
+}
+
+/* Spinner Animation */
 .spinner {
     border: 3px solid rgba(255,255,255,0.1);
     border-top: 3px solid var(--text-secondary);
@@ -160,20 +213,77 @@ body {
     width: 30px;
     height: 30px;
     animation: spin 1s linear infinite;
-    margin-bottom: 10px;
+    margin-bottom: 15px;
 }
 
-@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+@keyframes spin { 
+    0% { transform: rotate(0deg); } 
+    100% { transform: rotate(360deg); } 
+}
 
-/* Danh sách mail */
-#mail-list { list-style: none; padding: 0; margin: 0; }
+/* --- DANH SÁCH EMAIL --- */
+#mail-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
 #mail-list li {
     padding: 15px 20px;
     border-bottom: 1px solid var(--border-color);
     cursor: pointer;
     transition: background 0.2s;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
-#mail-list li:hover { background-color: #2a2a2a; }
-.mail-from { font-weight: bold; color: #fff; margin-bottom: 4px; }
-.mail-subject { color: var(--text-secondary); font-size: 14px; }
-.mail-time { float: right; font-size: 12px; color: #666; }
+
+#mail-list li:hover {
+    background-color: var(--hover-bg);
+}
+
+#mail-list li:last-child {
+    border-bottom: none;
+}
+
+.mail-info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.mail-from {
+    font-weight: bold;
+    color: #fff;
+    font-size: 15px;
+}
+
+.mail-subject {
+    color: var(--text-secondary);
+    font-size: 13px;
+}
+
+.mail-time {
+    font-size: 12px;
+    color: #666;
+    white-space: nowrap;
+}
+
+/* --- MOBILE RESPONSIVE --- */
+@media (max-width: 600px) {
+    .input-group {
+        padding: 0 10px;
+    }
+    .input-field {
+        font-size: 14px;
+    }
+    .title {
+        font-size: 22px;
+    }
+    .action-buttons {
+        flex-direction: column;
+    }
+    .btn-outline {
+        justify-content: center;
+    }
+}
