@@ -1,306 +1,366 @@
 /* --- BIẾN MÀU SẮC (Dễ dàng chỉnh sửa sau này) --- */
 :root {
-    --bg-color: #151515;       /* Nền đen chính */
-    --card-bg: #1e1e1e;        /* Nền của các hộp */
-    --border-color: #333333;   /* Màu viền */
-    --text-primary: #ffffff;   /* Chữ chính màu trắng */
-    --text-secondary: #b0b3b8; /* Chữ phụ màu xám */
-    --accent-color: #007bff;   /* Màu xanh dương (icon refresh) */
-    --green-timer: #2ecc71;    /* Màu xanh lá (đồng hồ) */
-    --hover-bg: #2a2a2a;       /* Màu nền khi di chuột vào */
+  --bg-color: #151515; /* Nền đen chính */
+  --card-bg: #1e1e1e; /* Nền của các hộp */
+  --border-color: #333333; /* Màu viền */
+  --text-primary: #ffffff; /* Chữ chính màu trắng */
+  --text-secondary: #b0b3b8; /* Chữ phụ màu xám */
+  --accent-color: #007bff; /* Màu xanh dương (icon refresh) */
+  --green-timer: #2ecc71; /* Màu xanh lá (đồng hồ) */
+  --hover-bg: #2a2a2a; /* Màu nền khi di chuột vào */
 }
 
 /* --- CẤU HÌNH CƠ BẢN --- */
 * {
-    box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    background-color: var(--bg-color);
-    color: var(--text-primary);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    margin: 0;
-    padding: 20px;
+  font-family:
+    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial,
+    sans-serif;
+  background-color: var(--bg-color);
+  color: var(--text-primary);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  margin: 0;
+  padding: 20px;
 }
 
 .main-container {
-    width: 100%;
-    max-width: 750px;
-    text-align: center;
+  width: 100%;
+  max-width: 750px;
+  text-align: center;
 }
 
 /* --- TIÊU ĐỀ --- */
 .title {
-    font-size: 28px;
-    margin-bottom: 10px;
-    font-weight: 700;
+  font-size: 28px;
+  margin-bottom: 10px;
+  font-weight: 700;
 }
 
 .subtitle {
-    color: var(--text-secondary);
-    font-size: 14px;
-    margin-bottom: 30px;
-    line-height: 1.5;
+  color: var(--text-secondary);
+  font-size: 14px;
+  margin-bottom: 30px;
+  line-height: 1.5;
 }
 
 /* --- KHUNG INPUT (DÙNG CHUNG CHO EMAIL & CODE) --- */
 .input-group {
-    background-color: var(--card-bg);
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
-    padding: 0 15px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    height: 60px;
-    margin-bottom: 15px;
-    transition: all 0.2s ease;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  background-color: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 0 15px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 60px;
+  margin-bottom: 15px;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 /* Hiệu ứng khi bấm vào nhập liệu */
 .input-group:focus-within {
-    border-color: #555;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  border-color: #555;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
 .input-field {
-    background: transparent;
-    border: none;
-    color: var(--text-primary);
-    font-size: 17px;
-    width: 100%;
-    outline: none;
-    font-family: 'Courier New', Courier, monospace; /* Font kiểu code */
-    font-weight: 600;
-    letter-spacing: 0.5px;
+  background: transparent;
+  border: none;
+  color: var(--text-primary);
+  font-size: 17px;
+  width: 100%;
+  outline: none;
+  font-family: "Courier New", Courier, monospace; /* Font kiểu code */
+  font-weight: 600;
+  letter-spacing: 0.5px;
 }
 
 .input-field::placeholder {
-    color: #555;
-    font-weight: normal;
-    font-style: italic;
+  color: #555;
+  font-weight: normal;
+  font-style: italic;
 }
 
 .input-controls {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  flex-shrink: 0;
 }
 
 /* Đồng hồ đếm ngược */
 .timer-text {
-    color: var(--green-timer);
-    font-family: monospace;
-    font-size: 16px;
-    font-weight: bold;
+  color: var(--green-timer);
+  font-family: monospace;
+  font-size: 16px;
+  font-weight: bold;
 }
 
 /* Nút copy icon */
 .btn-icon {
-    background: var(--hover-bg);
-    border: 1px solid #444;
-    color: var(--text-secondary);
-    font-size: 16px;
-    cursor: pointer;
-    width: 36px;
-    height: 36px;
-    border-radius: 6px;
-    transition: all 0.2s;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  background: var(--hover-bg);
+  border: 1px solid #444;
+  color: var(--text-secondary);
+  font-size: 16px;
+  cursor: pointer;
+  width: 36px;
+  height: 36px;
+  border-radius: 6px;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .btn-icon:hover {
-    background: #3a3a3a;
-    color: #fff;
-    border-color: #666;
+  background: #3a3a3a;
+  color: #fff;
+  border-color: #666;
 }
 
 /* --- CÁC NÚT CHỨC NĂNG (Thêm giờ, Thay đổi) --- */
 .action-buttons {
-    display: flex;
-    justify-content: center;
-    gap: 15px;
-    margin-bottom: 40px;
-    margin-top: 25px;
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-bottom: 40px;
+  margin-top: 25px;
 }
 
 .btn-outline {
-    background: transparent;
-    border: 1px solid var(--border-color);
-    color: var(--text-secondary);
-    padding: 10px 20px;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 14px;
+  background: transparent;
+  border: 1px solid var(--border-color);
+  color: var(--text-secondary);
+  padding: 10px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.2s;
+}
+
+.code-highlight {
+    color: #2ecc71;
+    font-weight: bold;
+    font-family: monospace;
+    font-size: 16px;
+    letter-spacing: 1px;
+}
+
+.code-container {
     display: flex;
     align-items: center;
-    gap: 8px;
-    transition: all 0.2s;
+    justify-content: space-between; /* Đẩy Code sang trái, Nút sang phải */
+    width: 100%;      /* Chiếm hết chiều ngang màn hình */
+    margin-top: 8px;  /* Cách dòng trên một chút cho thoáng */
+    background: rgba(255, 255, 255, 0.05); /* (Tùy chọn) Thêm nền mờ nhẹ cho nổi bật */
+    padding: 8px 10px; /* Đệm trong để chữ không sát mép */
+    border-radius: 6px;
+}
+
+/* --- Style cho nút copy nhỏ (Giống hệt nút to ở trên) --- */
+.btn-copy-small {
+  background-color: #2a2a2a; /* Nền tối giống nút trên */
+  border: 1px solid #444; /* Viền xám mờ */
+  color: #b0b3b8; /* Màu icon xám */
+  border-radius: 6px; /* Bo góc mềm mại */
+  padding: 6px 12px; /* Kích thước vừa vặn */
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.2s ease; /* Hiệu ứng chuyển màu mượt */
+
+  /* Căn chỉnh icon vào giữa */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  /* Tạo khoảng cách với mã số bên cạnh */
+  margin-left: 12px;
+}
+
+/* Hiệu ứng khi di chuột vào */
+.btn-copy-small:hover {
+  background-color: #3a3a3a; /* Sáng hơn chút */
+  color: #ffffff; /* Icon chuyển trắng */
+  border-color: #666;
+  transform: translateY(-1px); /* Nhún nhẹ lên 1 xíu cho cảm giác bấm */
+}
+
+/* Hiệu ứng khi đang bấm giữ */
+.btn-copy-small:active {
+  transform: translateY(0);
 }
 
 .btn-outline:hover {
-    background-color: var(--hover-bg);
-    color: #fff;
-    border-color: #666;
+  background-color: var(--hover-bg);
+  color: #fff;
+  border-color: #666;
 }
 
 /* --- HỘP THƯ (INBOX) --- */
 .inbox-container {
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
-    background-color: var(--card-bg);
-    text-align: left;
-    min-height: 400px;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden; /* Bo góc mượt mà */
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  background-color: var(--card-bg);
+  text-align: left;
+  min-height: 400px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden; /* Bo góc mượt mà */
 }
 
 .inbox-header {
-    padding: 15px 20px;
-    border-bottom: 1px solid var(--border-color);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-weight: bold;
-    font-size: 15px;
+  padding: 15px 20px;
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: bold;
+  font-size: 15px;
 }
 
 .btn-refresh {
-    background: transparent;
-    border: none;
-    color: var(--accent-color);
-    cursor: pointer;
-    font-size: 14px;
-    transition: opacity 0.2s;
+  background: transparent;
+  border: none;
+  color: var(--accent-color);
+  cursor: pointer;
+  font-size: 14px;
+  transition: opacity 0.2s;
 }
-.btn-refresh:hover { opacity: 0.8; }
+.btn-refresh:hover {
+  opacity: 0.8;
+}
 
 .inbox-content {
-    flex-grow: 1;
-    position: relative;
-    padding: 0;
+  flex-grow: 1;
+  position: relative;
+  padding: 0;
 }
 
 /* --- TRẠNG THÁI (Loading / Empty) --- */
 .state-box {
-    height: 100%;
-    min-height: 350px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    color: var(--text-secondary);
+  height: 100%;
+  min-height: 350px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: var(--text-secondary);
 }
 
 .state-box i {
-    margin-bottom: 15px;
+  margin-bottom: 15px;
 }
 
 /* Spinner Animation */
 .spinner {
-    border: 3px solid rgba(255,255,255,0.1);
-    border-top: 3px solid var(--text-secondary);
-    border-radius: 50%;
-    width: 30px;
-    height: 30px;
-    animation: spin 1s linear infinite;
-    margin-bottom: 15px;
+  border: 3px solid rgba(255, 255, 255, 0.1);
+  border-top: 3px solid var(--text-secondary);
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  animation: spin 1s linear infinite;
+  margin-bottom: 15px;
 }
 
-@keyframes spin { 
-    0% { transform: rotate(0deg); } 
-    100% { transform: rotate(360deg); } 
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 /* --- DANH SÁCH EMAIL --- */
 #mail-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
+  list-style: none;
+  padding: 0;
+  margin: 0;
 }
 
 #mail-list li {
-    padding: 15px 20px;
-    border-bottom: 1px solid var(--border-color);
-    cursor: pointer;
-    transition: background 0.2s;
-    display: flex;
-    flex-direction: column; /* Quan trọng: Xếp dọc thay vì xếp ngang */
-    gap: 6px; /* Khoảng cách giữa dòng trên và dòng dưới */
+  padding: 15px 20px;
+  border-bottom: 1px solid var(--border-color);
+  cursor: pointer;
+  transition: background 0.2s;
+  display: flex;
+  flex-direction: column; /* Quan trọng: Xếp dọc thay vì xếp ngang */
+  gap: 6px; /* Khoảng cách giữa dòng trên và dòng dưới */
 }
 
 #mail-list li:hover {
-    background-color: var(--hover-bg);
+  background-color: var(--hover-bg);
 }
 
 /* Dòng 1: Người gửi và Giờ */
 .mail-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
 }
 
 .mail-from {
-    font-weight: bold;
-    color: #fff;
-    font-size: 15px;
-    /* Xử lý khi tên quá dài */
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    max-width: 75%; /* Chỉ cho phép chiếm tối đa 75% chiều ngang */
+  font-weight: bold;
+  color: #fff;
+  font-size: 15px;
+  /* Xử lý khi tên quá dài */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 75%; /* Chỉ cho phép chiếm tối đa 75% chiều ngang */
 }
 
 .mail-time {
-    font-size: 12px;
-    color: var(--green-timer); /* Dùng màu xanh cho nổi hoặc dùng #666 tùy bạn */
-    white-space: nowrap;
-    flex-shrink: 0; /* Không bao giờ bị co lại */
+  font-size: 12px;
+  color: var(--green-timer); /* Dùng màu xanh cho nổi hoặc dùng #666 tùy bạn */
+  white-space: nowrap;
+  flex-shrink: 0; /* Không bao giờ bị co lại */
 }
 
 /* Dòng 2: Tiêu đề thư */
 .mail-subject {
-    color: var(--text-secondary);
-    font-size: 14px;
-    /* Xử lý khi tiêu đề quá dài */
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    width: 100%;
-    text-align: left;
+  color: var(--text-secondary);
+  font-size: 14px;
+  /* Xử lý khi tiêu đề quá dài */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100%;
+  text-align: left;
 }
 
 .mail-time {
-    font-size: 12px;
-    color: #666;
-    white-space: nowrap;
+  font-size: 12px;
+  color: #666;
+  white-space: nowrap;
 }
 
 /* --- MOBILE RESPONSIVE --- */
 @media (max-width: 600px) {
-    .input-group {
-        padding: 0 10px;
-    }
-    .input-field {
-        font-size: 14px;
-    }
-    .title {
-        font-size: 22px;
-    }
-    .action-buttons {
-        flex-direction: column;
-    }
-    .btn-outline {
-        justify-content: center;
-    }
+  .input-group {
+    padding: 0 10px;
+  }
+  .input-field {
+    font-size: 14px;
+  }
+  .title {
+    font-size: 22px;
+  }
+  .action-buttons {
+    flex-direction: column;
+  }
+  .btn-outline {
+    justify-content: center;
+  }
 }
