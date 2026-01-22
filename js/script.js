@@ -120,41 +120,41 @@ async function checkMail() {
 // 3. Vẽ danh sách ra màn hình
 function renderList(messages) {
     const listEl = document.getElementById('mail-list');
-    listEl.innerHTML = ''; // Xóa danh sách cũ
+    listEl.innerHTML = ''; 
 
     messages.forEach(msg => {
         const li = document.createElement('li');
-        
-        // 1. Xử lý thời gian
         const time = new Date(msg.createdAt).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
         
-        // 2. LOGIC TRÍCH XUẤT CODE (QUAN TRỌNG)
-        // Ghép cả tiêu đề và đoạn trích (intro) để tìm cho chắc
+        // Tìm 5 số: Ghép tiêu đề + nội dung tóm tắt để tìm cho chắc
         const fullText = (msg.subject + " " + (msg.intro || "")).trim();
-        
-        // Regex tìm 5 số liên tiếp: /\b\d{5}\b/
-        // \b: Ranh giới từ (để không bắt nhầm số trong chuỗi dài như 123456)
-        // \d{5}: Đúng 5 chữ số
         const codeMatch = fullText.match(/\b\d{5}\b/);
         
-        let displayContent = "";
+        let subjectContent = "";
         
         if (codeMatch) {
-            // Nếu tìm thấy code -> Hiển thị to, rõ, màu nổi bật
-            displayContent = `<span style="color: #2ecc71; font-weight: bold; font-size: 16px; font-family: monospace;">CODE: ${codeMatch[0]}</span>`;
+            const code = codeMatch[0];
+            // Nếu có Code -> Hiện Code + Nút Copy nhỏ
+            subjectContent = `
+                <div class="code-container">
+                    <span class="code-highlight">CODE: ${code}</span>
+                    <button class="btn-copy-small" onclick="copyListCode('${code}', this, event)" title="Sao chép mã">
+                        <i class="far fa-copy"></i>
+                    </button>
+                </div>
+            `;
         } else {
-            // Nếu không tìm thấy -> Hiển thị tiêu đề bình thường (nhưng mờ hơn chút)
-            displayContent = msg.subject || '(Không có tiêu đề)';
+            // Không có code -> Hiện tiêu đề như cũ
+            subjectContent = `<span class="normal-subject">${msg.subject || '(Không có tiêu đề)'}</span>`;
         }
 
-        // 3. Render HTML
         li.innerHTML = `
             <div class="mail-header">
                 <span class="mail-from">${msg.from.address}</span>
                 <span class="mail-time">${time}</span>
             </div>
             <div class="mail-subject">
-                ${displayContent}
+                ${subjectContent}
             </div>
         `;
         
@@ -223,6 +223,26 @@ function manualRefresh() {
         checkMail(); // Sau 500ms thì check thật (để người dùng thấy hiệu ứng loading)
     }, 500);
 }
+
+function copyListCode(code, btnElement, event) {
+    // Quan trọng: Ngăn không cho sự kiện click lan ra ngoài (để không mở email lên)
+    event.stopPropagation();
+
+    navigator.clipboard.writeText(code).then(() => {
+        // Hiệu ứng đổi icon thành dấu tích
+        const originalIcon = btnElement.innerHTML;
+        btnElement.innerHTML = '<i class="fas fa-check" style="color: #2ecc71;"></i>';
+        btnElement.style.borderColor = '#2ecc71';
+        
+        setTimeout(() => {
+            btnElement.innerHTML = originalIcon;
+            btnElement.style.borderColor = '';
+        }, 1000);
+
+    });
+}
+
+
 
 // --- KHỞI CHẠY ---
 createNewEmail(); // Tạo mail ngay khi vào web
