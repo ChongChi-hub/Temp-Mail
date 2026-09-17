@@ -1,7 +1,6 @@
-const API_URL = 'https://api.mail.tm';
-let token = '';
+const API_URL = 'https://api.guerrillamail.com/ajax.php';
+let token = ''; // Lưu sid_token
 let currentEmail = '';
-let currentPassword = '';
 
 // Thời gian đếm ngược (10 phút)
 let timeLeft = 600; 
@@ -52,41 +51,27 @@ async function createNewEmail() {
     timeLeft = 600; // Reset về 10p
 
     try {
-        // Lấy domain
-        const domainRes = await fetch(`${API_URL}/domains`);
-        const domains = await domainRes.json();
-        const domain = domains['hydra:member'][0].domain;
+        const res = await fetch(`${API_URL}?f=get_email_address`);
+        if (!res.ok) throw new Error(`Lỗi tạo email: ${res.status}`);
+        const data = await res.json();
+        
+        currentEmail = data.email_addr;
+        token = data.sid_token;
 
-        // Random user
-        const user = Math.random().toString(36).substring(7);
-        currentPassword = Math.random().toString(36).substring(7);
-        currentEmail = `${user}@${domain}`;
-
-        // Đăng ký
-        await fetch(`${API_URL}/accounts`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ address: currentEmail, password: currentPassword })
-        });
-
-        // Lấy Token
-        const tokenRes = await fetch(`${API_URL}/token`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ address: currentEmail, password: currentPassword })
-        });
-        const tokenData = await tokenRes.json();
-        token = tokenData.token;
+        // Lưu vào localStorage
+        localStorage.setItem('mail_token', token);
+        localStorage.setItem('mail_email', currentEmail);
 
         // Hiển thị email lên ô input
         document.getElementById('email-address').value = currentEmail;
         
         // Check mail ngay lập tức
         checkMail();
-
     } catch (e) {
         console.error(e);
-        alert("Lỗi kết nối server, vui lòng thử lại!");
+        document.getElementById('email-address').value = "Lỗi tạo email";
+        alert(e.message || "Lỗi kết nối server, vui lòng thử lại!");
+        setInboxState('empty');
     }
 }
 
@@ -95,12 +80,12 @@ async function checkMail() {
     if (!token) return;
 
     try {
-        const res = await fetch(`${API_URL}/messages`, {
-            headers: { 'Authorization': `Bearer ${token}` }
-        });
+        const res = await fetch(`${API_URL}?f=get_email_list&offset=0&sid_token=${token}`);
+        if (!res.ok) throw new Error(`Lỗi check mail: ${res.status}`);
         const data = await res.json();
-        const messages = data['hydra:member'] || [];
-
+        
+        // API Guerrilla trả về danh sách trong thuộc tính "list"
+        const messages = data.list || [];
         const listEl = document.getElementById('mail-list');
 
         if (messages.length === 0) {
@@ -124,10 +109,12 @@ function renderList(messages) {
 
     messages.forEach(msg => {
         const li = document.createElement('li');
-        const time = new Date(msg.createdAt).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+        // GuerrillaMail dùng mail_timestamp (số giây), cần đổi ra Date(milliseconds)
+        const date = msg.mail_timestamp ? new Date(msg.mail_timestamp * 1000) : new Date();
+        const time = date.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
         
         // Tìm 5 số: Ghép tiêu đề + nội dung tóm tắt để tìm cho chắc
-        const fullText = (msg.subject + " " + (msg.intro || "")).trim();
+        const fullText = (msg.mail_subject + " " + (msg.mail_excerpt || "")).trim();
         const codeMatch = fullText.match(/\b\d{5}\b/);
         
         let subjectContent = "";
@@ -145,12 +132,12 @@ function renderList(messages) {
             `;
         } else {
             // Không có code -> Hiện tiêu đề như cũ
-            subjectContent = `<span class="normal-subject">${msg.subject || '(Không có tiêu đề)'}</span>`;
+            subjectContent = `<span class="normal-subject">${msg.mail_subject || '(Không có tiêu đề)'}</span>`;
         }
 
         li.innerHTML = `
             <div class="mail-header">
-                <span class="mail-from">${msg.from.address}</span>
+                <span class="mail-from">${msg.mail_from}</span>
                 <span class="mail-time">${time}</span>
             </div>
             <div class="mail-subject">
@@ -158,7 +145,7 @@ function renderList(messages) {
             </div>
         `;
         
-        li.onclick = () => readMail(msg.id);
+        li.onclick = () => readMail(msg.mail_id);
         listEl.appendChild(li);
     });
 }
@@ -166,12 +153,10 @@ function renderList(messages) {
 // 4. Đọc nội dung chi tiết
 async function readMail(id) {
     try {
-        const res = await fetch(`${API_URL}/messages/${id}`, {
-            headers: { 'Authorization': `Bearer ${token}` }
-        });
+        const res = await fetch(`${API_URL}?f=fetch_email&email_id=${id}&sid_token=${token}`);
         const data = await res.json();
         // Hiện popup nội dung (đơn giản dùng alert, bạn có thể làm modal xịn hơn)
-        alert(`Nội dung:\n\n${data.text || "Email HTML"}`);
+        alert(`Nội dung:\n\n${data.mail_body || "Email HTML"}`);
     } catch (e) { alert("Lỗi đọc thư"); }
 }
 
@@ -245,7 +230,21 @@ function copyListCode(code, btnElement, event) {
 
 
 // --- KHỞI CHẠY ---
-createNewEmail(); // Tạo mail ngay khi vào web
+async function init() {
+    const savedToken = localStorage.getItem('mail_token');
+    const savedEmail = localStorage.getItem('mail_email');
+    
+    if (savedToken && savedEmail) {
+        token = savedToken;
+        currentEmail = savedEmail;
+        document.getElementById('email-address').value = currentEmail;
+        checkMail();
+    } else {
+        createNewEmail(); // Tạo mail ngay khi vào web nếu chưa có
+    }
+}
+
+init();
 
 // Đồng hồ đếm ngược (mỗi 1s)
 setInterval(updateTimer, 1000);
